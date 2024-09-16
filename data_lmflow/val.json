@@ -1,0 +1,33 @@
+{
+    "type": "conversation",
+    "instances": [
+      {
+        "system": "",
+        "conversation_id": 0,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nWhen did Virgin Australia start operating?\n\nInput:\nVirgin Australia, the trading name of Virgin Australia Airlines Pty Ltd, is an Australian-based airline. It is the largest airline by fleet size to use the Virgin brand. It commenced services on 31 August 2000 as Virgin Blue, with two aircraft on a single route. It suddenly found itself as a major airline in Australia's domestic market after the collapse of Ansett Australia in September 2001. The airline has since grown to directly serve 32 cities in Australia, from hubs in Brisbane, Melbourne and Sydney."
+          },
+          {
+            "role": "assistant",
+            "content": "Virgin Australia commenced services on 31 August 2000 as Virgin Blue, with two aircraft on a single route."
+          }
+        ]
+      },
+      {
+        "system": "",
+        "conversation_id": 1,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nWhich is a species of fish? Tope or Rope"
+          },
+          {
+            "role": "assistant",
+            "content": "Tope"
+          }
+        ]
+      }
+    ]
+}
