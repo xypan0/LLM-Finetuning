@@ -1,5 +1,5 @@
 compute_environment: LOCAL_MACHINE
-debug: true
+debug: false
 distributed_type: FSDP
 downcast_bf16: 'no'
 fsdp_config:
@@ -7,15 +7,12 @@ fsdp_config:
   fsdp_backward_prefetch: BACKWARD_PRE
   fsdp_cpu_ram_efficient_loading: true
   fsdp_forward_prefetch: true
-  fsdp_offload_params: false
-  fsdp_sharding_strategy: SHARD_GRAD_OP
-  fsdp_state_dict_type: FULL_STATE_DICT
+  fsdp_offload_params: true
+  fsdp_sharding_strategy: FULL_SHARD
+  fsdp_state_dict_type: SHARDED_STATE_DICT
   fsdp_sync_module_states: true
   fsdp_use_orig_params: true
-  # fsdp_transformer_layer_cls_to_wrap: Qwen2DecoderLayer
-  # fsdp_transformer_layer_cls_to_wrap: Gemma2DecoderLayer
-  fsdp_transformer_layer_cls_to_wrap: LlamaDecoderLayer
-  # fsdp_transformer_layer_cls_to_wrap: GPT2Block
+  fsdp_transformer_layer_cls_to_wrap: Qwen2DecoderLayer
 machine_rank: 0
 main_training_function: main
 mixed_precision: bf16
@@ -27,4 +24,4 @@ tpu_env: []
 tpu_use_cluster: false
 tpu_use_sudo: false
 use_cpu: false
-main_process_port: 7934
+main_process_port: 7936
