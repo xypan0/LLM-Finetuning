@@ -152,6 +152,9 @@ def parse_argument(sys_argv):
         '--lmflow-format', action='store_true',
         help='use lmflow format data')
 
+    parser.add_argument(
+        '--chat_template', type=str, default='llama3',
+        help='chat template')
     
     parser.add_argument(
         '--max-length', type=int,

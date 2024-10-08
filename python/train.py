@@ -31,7 +31,7 @@ import time
 import shutil
 
 
-def get_dataset(json_data_dir: str, response_loss_only, tokenizer, max_length, sharegpt_format: bool, lmflow_format:bool, pretrain: bool):
+def get_dataset(args, json_data_dir: str, response_loss_only, tokenizer, max_length, sharegpt_format: bool, lmflow_format:bool, pretrain: bool):
     assert not (sharegpt_format and lmflow_format), "CANNOT set lmflow_format and sharegpt_format simultaneously"
     if pretrain:
         print('preparing dataset')
@@ -39,7 +39,7 @@ def get_dataset(json_data_dir: str, response_loss_only, tokenizer, max_length, s
     elif sharegpt_format:
         transform=partial(tokenize_conversion, response_loss_only=response_loss_only, max_length=max_length, tokenizer=tokenizer)
     elif lmflow_format:
-        transform=partial(tokenize_conversion_lmflow, response_loss_only=response_loss_only, max_length=max_length, tokenizer=tokenizer)
+        transform=partial(tokenize_conversion_lmflow, response_loss_only=response_loss_only, max_length=max_length, tokenizer=tokenizer, chat_template=args.chat_template)
 
     dataset=JsonDataset(json_data=json_data_dir, 
                                  shuffle=True, train=True,
@@ -73,6 +73,7 @@ def load_data(
     if not tokenizer.pad_token:
         tokenizer.pad_token = tokenizer.eos_token
     train_dataset = get_dataset(
+        args,
         args.train_data,
         args.response_loss_only,
         tokenizer,
@@ -84,6 +85,7 @@ def load_data(
     print(train_dataset)
     print(train_dataset[0])
     val_dataset = get_dataset(
+        args,
         args.val_data,
         args.response_loss_only,
         tokenizer,
