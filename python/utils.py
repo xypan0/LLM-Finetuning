@@ -70,18 +70,18 @@ def evaluate(model, accelerator, data_loader, args):
     torch.set_rng_state(torch_rng_state)
     return eval_loss
 
-def logging_stat_dict(stat_dict, prefix='', suffix='', use_wandb=False, accelerator=None):
-    logger = get_logger('accelerator')
-    stat_str_list = [f'{prefix}']
-    for key, value in stat_dict.items():
-        stat_str_list.append(f' {key} = {value},')
-    stat_str_list.append(f'{suffix}')
+# def logging_stat_dict(stat_dict, prefix='', suffix='', use_wandb=False, accelerator=None):
+#     logger = get_logger('accelerator')
+#     stat_str_list = [f'{prefix}']
+#     for key, value in stat_dict.items():
+#         stat_str_list.append(f' {key} = {value},')
+#     stat_str_list.append(f'{suffix}')
 
-    stat_str = ''.join(stat_str_list)
-    logger.info(stat_str)
+#     stat_str = ''.join(stat_str_list)
+#     logger.info(stat_str)
 
-    if use_wandb and accelerator.is_main_process:
-        wandb.log(stat_dict)
+#     if use_wandb and accelerator.is_main_process:
+#         wandb.log(stat_dict, step=stat_dict['step'])
 
 def evaluate_and_logging(model, global_step, start_time, args, accelerator, val_loader):
     if global_step < 0 or (global_step % args.eval_frequency == 0):
@@ -93,9 +93,9 @@ def evaluate_and_logging(model, global_step, start_time, args, accelerator, val_
         suffix = ' (evaluation mode of model)'
 
         stat_dict = {
-            'validation loss': eval_loss,
-            'step': global_step,
-            'time': time.time() - start_time,
+            'eval/loss': eval_loss,
+            'eval/step': global_step,
+            'eval/time': time.time() - start_time,
         }
         logging_stat_dict(stat_dict, prefix, suffix, args.use_wandb, accelerator)
 

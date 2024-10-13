@@ -141,7 +141,7 @@ def optimize(
     print(optimizer_args_dict)
     optimizer = get_optimizer(model.parameters(), optimizer_args_dict)
     
-    warmup_steps = int(args.warmup_ratio * max_steps)
+    warmup_steps = math.ceil(args.warmup_ratio * max_steps)
     lr_scheduler = get_cosine_schedule_with_warmup(
         optimizer=optimizer,
         num_warmup_steps=warmup_steps,
@@ -189,15 +189,18 @@ def optimize(
             loss = outputs.loss / grad_accumulation_steps
             total_loss += accelerator.gather(loss.clone()).detach().cpu().mean()
             accelerator.backward(loss)
-
+        
+        if accelerator.sync_gradients:
+            grad_norm = accelerator.clip_grad_norm_(model.parameters(), 1e10)
 
         optimizer.step()
         optimizer.zero_grad()
         stat_dict = {
-            'train loss': total_loss,
-            'step': step,
-            'time': time.time() - start_time,
-            'lr': lr_scheduler.get_last_lr()[0]
+            'train/loss': total_loss,
+            'train/step': step+1,
+            'train/time': time.time() - start_time,
+            'train/lr': lr_scheduler.get_last_lr()[0],
+            'train/grad_norm': grad_norm.detach().item()
         }
         logging_stat_dict(
             stat_dict,
@@ -205,7 +208,7 @@ def optimize(
             suffix='',
             use_wandb=args.use_wandb,
             accelerator=accelerator,
-            wandb_commit=step % args.eval_frequency
+            # wandb_commit=step % args.eval_frequency
         )
 
     if accelerator.is_main_process and args.save_dir is not None and os.path.exists(args.save_dir):
