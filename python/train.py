@@ -20,10 +20,8 @@ import wandb
 from functools import partial
 from parse_args import parse_argument, parse_args_dict
 from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup, Qwen2ForCausalLM, Gemma2ForCausalLM, AutoModelForCausalLM
-# from CustomModels.modeling_llama import LlamaForCausalLM
-# from CustomModels.modeling_qwen2 import Qwen2ForCausalLM
-# from CustomModels.modeling_gemma2 import Gemma2ForCausalLM
 
+import math
 from torch import linalg as LA
 
 from utils import get_optimizer, evaluate_and_logging, make_tqdm, save_model, logging_stat_dict
@@ -130,7 +128,7 @@ def optimize(
     world_size = int(os.environ.get("WORLD_SIZE", 1))
     grad_accumulation_steps = grad_accumulation_steps // world_size
     if args.max_steps is None:
-        max_steps = len(train_loader.dataset) // args.global_batch_size * args.epoch
+        max_steps = math.ceil(len(train_loader.dataset) / args.global_batch_size * args.epoch)
     else:
         max_steps = args.max_steps
     accelerator.print(f'max_steps: {max_steps}, grad_accu_steps: {grad_accumulation_steps}')
@@ -199,14 +197,15 @@ def optimize(
             'train loss': total_loss,
             'step': step,
             'time': time.time() - start_time,
-            'lr': lr_scheduler.get_lr()
+            'lr': lr_scheduler.get_last_lr()[0]
         }
         logging_stat_dict(
             stat_dict,
             prefix=f'At the beginning of i = {step},',
             suffix='',
             use_wandb=args.use_wandb,
-            accelerator=accelerator
+            accelerator=accelerator,
+            wandb_commit=step % args.eval_frequency
         )
 
     if accelerator.is_main_process and args.save_dir is not None and os.path.exists(args.save_dir):

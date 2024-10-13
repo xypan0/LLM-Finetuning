@@ -141,7 +141,7 @@ def save_model(accelerator, accelerate_model, tokenizer, save_dir, **kargs):
     if accelerator.is_main_process:
         tokenizer.save_pretrained(save_dir)
 
-def logging_stat_dict(stat_dict, prefix='', suffix='', use_wandb=False, accelerator=None):
+def logging_stat_dict(stat_dict, prefix='', suffix='', use_wandb=False, accelerator=None, wandb_commit=True):
     logger = get_logger('accelerator')
     stat_str_list = [f'{prefix}']
     for key, value in stat_dict.items():
@@ -152,4 +152,4 @@ def logging_stat_dict(stat_dict, prefix='', suffix='', use_wandb=False, accelera
     logger.info(stat_str)
 
     if use_wandb and accelerator.is_main_process:
-        wandb.log(stat_dict)
+        wandb.log(stat_dict, commit=wandb_commit)

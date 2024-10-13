@@ -1,0 +1,136 @@
+wandb_version: 1
+
+train_data:
+  desc: null
+  value: /u/xpan2/projects/scalebio/data/openhermes2.5-smp6200/train/*.json
+val_data:
+  desc: null
+  value: /u/xpan2/projects/scalebio/data/openhermes2.5-smp6200/val/*.json
+num_dataload_worker:
+  desc: null
+  value: 4
+optimizer:
+  desc: null
+  value: name=adamw, lr=1e-5
+max_steps:
+  desc: null
+  value: null
+warmup_ratio:
+  desc: null
+  value: 0.03
+epoch:
+  desc: null
+  value: 1
+global_batch_size:
+  desc: null
+  value: 64
+micro_batch_size:
+  desc: null
+  value: 2
+val_batch_size:
+  desc: null
+  value: 2
+model_type:
+  desc: null
+  value: Llama
+model:
+  desc: null
+  value: Qwen/Qwen2-7B
+tokenizer_name:
+  desc: null
+  value: Qwen/Qwen2-7B
+bf16:
+  desc: null
+  value: true
+lora:
+  desc: null
+  value: false
+lisa:
+  desc: null
+  value: false
+lisa_step:
+  desc: null
+  value: 20
+eval_frequency:
+  desc: null
+  value: 10
+seed:
+  desc: null
+  value: 1234
+pseudo_random:
+  desc: null
+  value: true
+logging_conf_file:
+  desc: null
+  value: /u/xpan2/projects/scalebio/LLM-Finetuning//conf/common.log_conf
+use_wandb:
+  desc: null
+  value: true
+norm:
+  desc: null
+  value: null
+wandb_project:
+  desc: null
+  value: huggingface
+wandb_run_name:
+  desc: null
+  value: test_fsdp
+save_dir:
+  desc: null
+  value: /u/xpan2/projects/scalebio/LLM-Finetuning//models/test
+diff_norm:
+  desc: null
+  value: false
+lmflow_format:
+  desc: null
+  value: true
+chat_template:
+  desc: null
+  value: qwen2
+max_length:
+  desc: null
+  value: 1024
+response_loss_only:
+  desc: null
+  value: true
+sharegpt_format:
+  desc: null
+  value: false
+pretrain:
+  desc: null
+  value: false
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.19
+    cli_version: 0.17.8
+    framework: huggingface
+    huggingface_version: 4.44.2
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1728800343
+    t:
+      1:
+      - 1
+      - 11
+      - 49
+      - 51
+      - 55
+      - 71
+      2:
+      - 1
+      - 11
+      - 49
+      - 51
+      - 55
+      - 71
+      3:
+      - 13
+      - 16
+      - 23
+      4: 3.9.19
+      5: 0.17.8
+      6: 4.44.2
+      8:
+      - 5
+      13: linux-aarch64
