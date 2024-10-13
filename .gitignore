@@ -168,3 +168,4 @@ res.txt
 models/
 log/
 data/
+wandb/
